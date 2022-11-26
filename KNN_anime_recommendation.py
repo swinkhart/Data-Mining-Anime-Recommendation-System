@@ -13,11 +13,12 @@ fitData = max_abs_scaler.fit_transform(fitDf)
 nbrs = NearestNeighbors(n_neighbors=6, algorithm="auto").fit(fitDf)
 distances, indices = nbrs.kneighbors(fitDf)
 
-
+# need to make this less concise, E X P A N D
 def getIndexFromName(name):
     return mainDf[mainDf["name"] == name].index[0]
 
 
+# need to modify to accept types(OVA, ONA, Movie, ect)
 def getSimlarAnimes(name, type=None):
     found_id = getIndexFromName(name)
     for id in indices[found_id][1:]:
