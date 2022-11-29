@@ -5,7 +5,6 @@ from sklearn.neighbors import NearestNeighbors
 mainDf = pd.read_csv("datasets/cleanedAnime.csv")
 fitDf = pd.read_csv("datasets/fitSet.csv")
 
-# need to modify to accept types(OVA, ONA, Movie, ect)
 def animeRec(name, type=None):
     if type:
         found_id = mainDf[mainDf["Name"] == name].index[0]
