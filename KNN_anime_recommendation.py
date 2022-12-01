@@ -5,6 +5,8 @@ from sklearn.neighbors import NearestNeighbors
 mainDf = pd.read_csv("datasets/cleanedAnime.csv")
 fitDf = pd.read_csv("datasets/fitSet.csv")
 
+actualNames = list(mainDf.Name.values)
+
 def animeRec(name, type=None):
     if type:
         found_id = mainDf[mainDf["Name"] == name].index[0]
@@ -22,7 +24,13 @@ def animeRec(name, type=None):
 
 while True:
     name = input("Enter the name of the anime: ")
-    number = int(input("Enter number of recommendations: "))
+
+    try:
+        number = int(input("Enter number of recommendations: "))
+    except ValueError:
+        print("\033[1;3m" + "\033[91m" +"Input must be a number. \n" + "\033[0m")
+        continue
+
     print("TV:1 | Movie:2 | Music:3 | OVA:4 | Web:5 | None:0")
     type_ = int(input("Enter number for type of anime: "))
     print()
@@ -34,37 +42,41 @@ while True:
     try:
         match type_:
             case 0:
-                print("Recommendations: ")
+                print("\033[4m" + "Recommendations:" + "\033[0m")
                 animeRec(name)
             case 1:
-                print("Recommended TV Shows: ")
+                print("\033[4m" + "Recommended TV Shows:" + "\033[0m")
                 animeRec(name, "TV   ")
             case 2:
-                print("Recommended Movies: ")
+                print("\033[4m" + "Recommended Movies:" + "\033[0m")
                 animeRec(name, "Movie")
             case 3:
-                print("Recommended Music: ")
+                print("\033[4m" + "Recommended Music:" + "\033[0m")
                 animeRec(name, "Music")
             case 4:
-                print("Recommended OVA's: ")
+                print("\033[4m" + "Recommended OVA's:" + "\033[0m")
                 animeRec(name, "OVA  ")
             case 5:
-                print("Recommended Web Shows: ")
+                print("\033[4m" + "Recommended Web Shows:" + "\033[0m")
                 animeRec(name, "Web  ")
             case _:
-                print("Invalid Input")
+                print("\033[1;3m" + "\033[91m" + "Invalid Input" + "\033[0m")
     except IndexError:
-        print(f"--!\"{name}\" was not present in the available dataset!--")
-        again = input("would you like to go again?(y|n): ")
+        print("\033[1;3m" + "\033[91m" + f"\"{name}\" was not present in the available dataset" + "\033[0m" + "\033[1;3m" + "\033[4m" + f"\n \nAvailable names containing \"{name}\":" + "\033[0m")
+        for actualName in actualNames:
+            if name in actualName:
+                print(actualName)
+        
+        again = input("\nwould you like to go again?(y|n): ")
         if again == "n":
             break;
         else:
             print()
             continue
 
-    again = input("would you like to go again(y|n): ")
+    again = input("\nwould you like to go again(y|n): ")
     if again == "n":
         break;
     print()
 
-print("==========DONE==========")
+print("\033[92m" + "==========DONE==========" + "\033[0m")
