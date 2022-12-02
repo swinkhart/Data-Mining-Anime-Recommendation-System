@@ -7,6 +7,7 @@ fitDf = pd.read_csv("datasets/fitSet.csv")
 
 actualNames = list(mainDf.Name.values)
 
+
 def animeRec(name, type=None):
     if type:
         found_id = mainDf[mainDf["Name"] == name].index[0]
@@ -28,14 +29,18 @@ while True:
     try:
         number = int(input("Enter number of recommendations: "))
     except ValueError:
-        print("\033[1;3m" + "\033[91m" +"Input must be a number. \n" + "\033[0m")
+        print("\033[1;3m" + "\033[91m" + "Input must be a number. \n" + "\033[0m")
         continue
 
     print("TV:1 | Movie:2 | Music:3 | OVA:4 | Web:5 | None:0")
-    type_ = int(input("Enter number for type of anime: "))
+    try:
+        type_ = int(input("Enter number for type of anime: "))
+    except ValueError:
+        print("\033[1;3m" + "\033[91m" + "Input must be a number. \n" + "\033[0m")
+        continue
     print()
 
-    #KDtree is used because it is faster in low dimensional datasets
+    # KDtree is used because it is faster in low dimensional datasets
     nbrs = NearestNeighbors(n_neighbors=number, algorithm="kd_tree").fit(fitDf)
     distances, indices = nbrs.kneighbors(fitDf)
 
@@ -62,21 +67,30 @@ while True:
             case _:
                 print("\033[1;3m" + "\033[91m" + "Invalid Input" + "\033[0m")
     except IndexError:
-        print("\033[1;3m" + "\033[91m" + f"\"{name}\" was not present in the available dataset" + "\033[0m" + "\033[1;3m" + "\033[4m" + f"\n \nAvailable names containing \"{name}\":" + "\033[0m")
+        print(
+            "\033[1;3m"
+            + "\033[91m"
+            + f'"{name}" was not present in the available dataset'
+            + "\033[0m"
+            + "\033[1;3m"
+            + "\033[4m"
+            + f'\n \nAvailable names containing "{name}":'
+            + "\033[0m"
+        )
         for actualName in actualNames:
             if name in actualName:
                 print(actualName)
-        
+
         again = input("\nwould you like to go again?(y|n): ")
         if again == "n":
-            break;
+            break
         else:
             print()
             continue
 
     again = input("\nwould you like to go again(y|n): ")
     if again == "n":
-        break;
+        break
     print()
 
 print("\033[92m" + "==========DONE==========" + "\033[0m")
